@@ -16,7 +16,6 @@ const PageLoginScreen = ({ navigation }) => {
   return (
     <PaperProvider>
       <SafeAreaView style={styles.container}>
-        {/* Avatar Image */}
         <Image source={require('./assets/avatar.jpg')} style={styles.avatar}/>
 
         <TextInput label="Email Address" value={email} onChangeText={setEmail} style={styles.input} keyboardType="email-address" autoCapitalize="none"/>
