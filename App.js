@@ -1,68 +1,57 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Provider as PaperProvider, TextInput, Button, Checkbox, Divider } from 'react-native-paper';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useState } from 'react';
 
 const PageLoginScreen = ({ navigation }) => {
   const [isRemembered, setIsRemembered] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const toggleRememberMe = () => {
     setIsRemembered(!isRemembered);
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.loginSection}>
-        <Text style={styles.login}>Login</Text>
-      </View>
+    <PaperProvider>
+      <SafeAreaView style={styles.container}>
+        {/* Avatar Image */}
+        <Image source={require('./assets/avatar.jpg')} style={styles.avatar}/>
 
-      <View style={styles.emAdSection}>
-        <Text style={styles.emmAdd}>Email Address:</Text>
-        <TextInput style={styles.input} placeholder="Enter email" keyboardType="email-address" autoCapitalize="none" />
-      </View>
+        <TextInput label="Email Address" value={email} onChangeText={setEmail} style={styles.input} keyboardType="email-address" autoCapitalize="none"/>
 
-      <View style={styles.passWrdSection}>
-        <Text style={styles.PaSS}>Password:</Text>
-        <TextInput style={styles.input} placeholder="Enter password" secureTextEntry={true} autoCapitalize="none" />
-      </View>
+        <TextInput label="Password" value={password} onChangeText={setPassword} style={styles.input} secureTextEntry autoCapitalize="none"/>
 
-      <TouchableOpacity style={styles.checkboxContainer} onPress={toggleRememberMe}>
-        <Icon name={isRemembered ? "check-box" : "check-box-outline-blank"} />
-        <Text style={styles.checkLabel}>Remember Me</Text>
-      </TouchableOpacity>
+        <View style={styles.checkboxContainer}>
+          <Checkbox status={isRemembered ? 'checked' : 'unchecked'} onPress={toggleRememberMe} color="#AB644B"/>
+          <Text style={styles.checkLabel}>Remember Me</Text>
+        </View>
 
-      <TouchableOpacity style={styles.submitButton} onPress={() => console.log('Submit pressed')}>
-        <Text style={styles.submitButtonText}>Submit</Text>
-      </TouchableOpacity>
+        <Button mode="contained" onPress={() => console.log('Login pressed')} style={styles.loginButton} buttonColor="#AB644B" textColor="#fff">Login</Button>
 
-      <TouchableOpacity style={styles.forgotButton} onPress={() => console.log('Forgot Password pressed')}>
-        <Text style={styles.forgotButtonText}>Forgot Password?</Text>
-      </TouchableOpacity>
-
-      <View style={styles.orSection}>
-        <View style={styles.line}></View>
-        <Text style={styles.orText}>OR</Text>
-        <View style={styles.line}></View>
-      </View>
-
-      <TouchableOpacity style={styles.googleButton} onPress={() => console.log('Login with Google pressed')}>
-        <FontAwesome name="google" size={24} color="#AB644B" />
-        <Text style={styles.googleButtonText}>Login with Google</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity style={styles.facebookButton} onPress={() => console.log('Login with Facebook pressed')}>
-        <FontAwesome name="facebook" size={24} color="#AB644B" />
-        <Text style={styles.googleButtonText}>Login with Facebook</Text>
-      </TouchableOpacity>
-
-      <View style={styles.addSection}>
-        <Text style={styles.addText}>Need an account?</Text>
-        <TouchableOpacity onPress={() => console.log('Sign Up pressed')}>
-          <Text style={styles.signUpButtonText}> SIGN UP</Text>
+        <TouchableOpacity style={styles.forgotButton} onPress={() => console.log('Forgot Password pressed')}>
+          <Text style={styles.forgotButtonText}>Forgot Password?</Text>
         </TouchableOpacity>
-      </View>
-    </View>
+
+        <View style={styles.orSection}>
+          <Divider style={styles.line} />
+          <Text style={styles.orText}>OR</Text>
+          <Divider style={styles.line} />
+        </View>
+
+        <Button mode="outlined" icon={() => <FontAwesome name="google" size={20} color="#AB644B" />} onPress={() => console.log('Login with Google pressed')} style={styles.socialButton} textColor="#AB644B">Login with Google</Button>
+
+        <Button mode="outlined" icon={() => <FontAwesome name="facebook" size={20} color="#AB644B" />} onPress={() => console.log('Login with Facebook pressed')} style={styles.socialButton} textColor="#AB644B">Login with Facebook</Button>
+
+        <View style={styles.addSection}>
+          <Text style={styles.addText}>Don't have an account?</Text>
+          <TouchableOpacity onPress={() => console.log('Sign Up pressed')}>
+            <Text style={styles.signUpButtonText}> SIGN UP</Text>
+          </TouchableOpacity>
+        </View>
+      </SafeAreaView>
+    </PaperProvider>
   );
 };
 
@@ -70,66 +59,41 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#8ecae6',
-    padding: 13,
+    padding: 16,
   },
-  loginSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
+  avatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    alignSelf: 'center',
+    marginBottom: 30,
+    marginTop: 15,
   },
   login: {
     fontSize: 25,
-    paddingTop: 75,
     fontWeight: 'bold',
-  },
-  emmAdd: {
-    fontSize: 15,
-    paddingLeft: 10,
-    paddingTop: 30,
+    textAlign: 'center',
+    marginBottom: 30,
   },
   input: {
-    borderWidth: 1,
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingLeft: 5,
-    paddingRight: 5,
-    marginLeft: 10,
-    marginTop: 10,
-    width: 310,
-    borderRadius: 10,
-  },
-  PaSS: {
-    fontSize: 15,
-    paddingLeft: 10,
-    paddingTop: 18,
+    marginBottom: 16,
+    backgroundColor: 'transparent',
   },
   checkboxContainer: {
-    marginLeft: 10,
-    marginTop: 4,
-    padding: 10,
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 16,
   },
   checkLabel: {
-    marginLeft: 5,
-    flexDirection: 'row',
+    marginLeft: 8,
   },
-  submitButton: {
-    padding: 15,
-    marginTop: 20,
-    backgroundColor: '#AB644B',
+  loginButton: {
+    marginBottom: 16,
     borderRadius: 10,
-    width: 310,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: 10,
-  },
-  submitButtonText: {
-    color: '#fff',
   },
   forgotButton: {
-    marginLeft: 200,
-    marginTop: 8,
+    alignSelf: 'flex-end',
+    marginBottom: 16,
   },
   forgotButtonText: {
     color: '#696969',
@@ -138,7 +102,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 20,
-    marginTop: 20,
   },
   orText: {
     marginHorizontal: 10,
@@ -150,35 +113,10 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: 'black',
   },
-  googleButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 5,
-    paddingVertical: 10,
-    borderWidth: 1,
+  socialButton: {
+    marginBottom: 15,
     borderColor: '#AB644B',
     borderRadius: 5,
-  },
-  googleButtonText: {
-    marginLeft: 10,
-    color: '#AB644B',
-    fontSize: 16,
-  },
-  facebookButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 15,
-    paddingVertical: 10,
-    borderWidth: 1,
-    borderColor: '#AB644B',
-    borderRadius: 5,
-  },
-  facebookButtonText: {
-    marginLeft: 10,
-    color: '#AB644B',
-    fontSize: 16,
   },
   addSection: {
     flexDirection: 'row',
